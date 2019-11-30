@@ -1,0 +1,16 @@
+
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.invalid-tooltip{
+    font-size: 0.7rem;
+    padding-top: 0.02rem;
+    padding-bottom: 0.02rem;
+}
+
+.d-block {
+    display: block;
+}
+
