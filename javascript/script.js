@@ -57,7 +57,7 @@ function submit() {
         if (checkTerms() !== true) { errors++}
     }
 
-    // Byter sida om inga fel har hittats 
+    // Byter "sida" om inga fel har hittats 
     if (errors === 0) {
         if (page === 'registration') {
             document.getElementById("regForm").remove();
@@ -72,7 +72,7 @@ function submit() {
 }
 
 // TESTAR VILLKOR
-    // Kollar om någonn radiobutton är checked
+    // Kollar om någon radiobutton är checked
     function checkRadio() {
         for (var e = 0; e < radio.length; e++) {
         if (radio[e].checked) 
@@ -111,7 +111,7 @@ function inputValidate(id, value) {
                 return true;
                 } else {
                 return "It seems this is not a valid email. Please make sure it is correct.";
-                }}
+            }}
 
         case "password":
             if (length(8)) {
@@ -121,13 +121,12 @@ function inputValidate(id, value) {
                 return true;
                 } else {
                 return "The password must include at least one letter and one number";
-                }}
+            }}
 
         case "message":
             if (length(3)) {
                 return "Please enter a message";
             } else return true;
-            default:
     }
 
     function validateEmail(email) {
@@ -220,7 +219,8 @@ function genderAlerts(x) {
 function customerAlerts(x) {
     //   Om inget alternativ är valt så händer det här
     if (x() !== true) {
-        document.getElementById('customerGroup').classList.add("is-invalid");    
+        document.getElementById('customerGroup').classList.add("is-invalid");   
+
         newDiv = document.createElement("div");
         newDiv.className = "invalid-tooltip";
         newDiv.id = "customerAlert";
@@ -251,7 +251,7 @@ function termsAlerts(x) {
                 document.getElementById('terms').classList.add("is-valid");    
 }}}
 
-// Skapar meddelande om registrering och inloggninsformuläret
+// Skapar inloggninsformuläret och meddelande om att man är registrerad 
 function addLogin() {
     const div = document.createElement('form');
     div.className = 'login';
