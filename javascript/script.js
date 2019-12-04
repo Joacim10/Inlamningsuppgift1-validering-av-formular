@@ -18,7 +18,7 @@ function inputEvents() {
         // FOCUS = När man väljer ett fält tas alla alert-meddelanden bort för det fältet
         inputs[i].onfocus = deleteInputAlerts; //tar bort meddelanden för alla inputs
         if (inputs[i].name === 'gender'){inputs[i].onfocus = deleteGenderAlerts;} //tar bort meddelanden för alla radio buttons
-    }}
+}}
 
 document.getElementById('customerGroup').onfocus = deleteCustomerAlerts; //tar bort meddelanden för customerGroup när man väljer det fältet
 document.getElementById('terms').onfocus = deleteTermsAlerts; //tar bort meddelanden för terms när man väljer det fältet
