@@ -1,13 +1,14 @@
 var inputs = document.getElementsByTagName('input'); //en lista av alla inputs, används i flera funktioner
 const radio = document.getElementsByName('gender'); //en lista av alla radio-inputs, används i flera funktioner
-var page = 'registration'; //börjar med sidan regitration
+var page = 'registration'; //börjar på sidan "registration".
 
-// Lägger till events som startar validering på varje enskilt fält i det aktuella formuläret.
+// EVENTS
+
 inputEvents();
-function inputEvents() {
+function inputEvents() {   // Lägger till events som startar validering på varje enskilt fält i det aktuella formuläret.
     for (var i = 0; i < inputs.length; i++) {
 
-        // BLUR = När man lämnar ett input-fält sätts doThisOnBlur igång på det fältet 
+        // Blur = När man lämnar ett input-fält sätts doThisOnBlur igång på det fältet 
         if (inputs[i].name !== 'gender' && inputs[i].id !== 'terms') {inputs[i].onblur = doThisOnBlur;}
         function doThisOnBlur() {  // doThisOnBlur validerar det fält som man lämnar och skapar meddelanden 
             let id = this.id;
@@ -15,7 +16,7 @@ function inputEvents() {
             let validReturn = inputValidate(id, value);
             inputAlert(validReturn, id);}
             
-        // FOCUS = När man väljer ett fält tas alla alert-meddelanden bort för det fältet
+        // Focus = När man väljer ett fält tas alla alert-meddelanden bort för det fältet
         inputs[i].onfocus = deleteInputAlerts; //tar bort meddelanden för alla inputs
         if (inputs[i].name === 'gender'){inputs[i].onfocus = deleteGenderAlerts;} //tar bort meddelanden för alla radio buttons
 }}
@@ -23,7 +24,7 @@ function inputEvents() {
 document.getElementById('customerGroup').onfocus = deleteCustomerAlerts; //tar bort meddelanden för customerGroup när man väljer det fältet
 document.getElementById('terms').onfocus = deleteTermsAlerts; //tar bort meddelanden för terms när man väljer det fältet
 
-// SUBMIT = När man klickar på submit eller login-knappen startas en validering av alla fält
+// Submit = När man klickar på submit eller login-knappen startas en validering av alla fält
 document.getElementById('btnSubmit').onclick = submit;
 
 function submit() {
@@ -31,7 +32,6 @@ function submit() {
     let errors = 0; //Varje gång man trycker på submit eller login-knappen så börjar errors från noll
 
     // Funktionen inputLoop tar varje inputs id (förutom gender och terms som är radio och checkbox-inputs) och testar det i inputValidate.
-    // Därefter startas inputAlert som meddelar vilka fel som hittats
     inputLoop();
     function inputLoop() {
         for (var e = 0; e < inputs.length; e++) {
@@ -39,7 +39,7 @@ function submit() {
               let id = inputs[e].id;
               let value = inputs[e].value;
               let validReturn = inputValidate(id, value);
-              inputAlert(validReturn, e);     // Meddelar om fel har hittats eller inte
+              inputAlert(validReturn, e);     // inputAlert meddelar om fel har hittats eller inte
               if (validReturn !== true) { errors++}
     }}}
 
@@ -135,8 +135,7 @@ function inputValidate(id, value) {   //Testar alla input-fält
 
     function length(i) {
         return value.length < i;
-    }
-}
+}}
 
 // FUNKTIONER FÖR ATT TA BORT FELMEDDELANDEN
 
@@ -257,5 +256,3 @@ function youAreLoggedIn() {
     div.innerHTML = `<div class="m-4">You are now logged in!</div>`;
     document.getElementById('containerId').appendChild(div);
 }
-
-
