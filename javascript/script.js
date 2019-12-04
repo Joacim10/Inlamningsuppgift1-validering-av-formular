@@ -4,8 +4,8 @@ var page = 'registration'; //börjar på sidan "registration".
 
 // EVENTS
 
-inputEvents();
-function inputEvents() {   // Lägger till events som startar validering på varje enskilt fält i det aktuella formuläret.
+inputEvents();   // Lägger till events som startar validering på varje enskilt input-fält i det aktuella formuläret.
+function inputEvents() {   
     for (var i = 0; i < inputs.length; i++) {
 
         // Blur = När man lämnar ett input-fält sätts doThisOnBlur igång på det fältet 
@@ -15,24 +15,29 @@ function inputEvents() {   // Lägger till events som startar validering på var
             let value = this.value;
             let validReturn = inputValidate(id, value);
             inputAlert(validReturn, id);}
-            
+
         // Focus = När man väljer ett fält tas alla alert-meddelanden bort för det fältet
-        inputs[i].onfocus = deleteInputAlerts; //tar bort meddelanden för alla inputs
+        inputs[i].onfocus = deleteInputAlerts;
         if (inputs[i].name === 'gender'){inputs[i].onfocus = deleteGenderAlerts;} //tar bort meddelanden för alla radio buttons
 }}
 
 document.getElementById('customerGroup').onfocus = deleteCustomerAlerts; //tar bort meddelanden för customerGroup när man väljer det fältet
+document.getElementById('message').onclick = deleteMessageAlerts; //tar bort meddelanden för message när man väljer det fältet
 document.getElementById('terms').onfocus = deleteTermsAlerts; //tar bort meddelanden för terms när man väljer det fältet
+document.getElementById('message').onblur = messageBlur; //validerar message-fältet när man lämnar fältet och skapar meddelanden
 
-// Submit = När man klickar på submit eller login-knappen startas en validering av alla fält
+    function messageBlur() {
+        let validReturn = checkMessage;
+        messageAlerts(validReturn);}
+
 document.getElementById('btnSubmit').onclick = submit;
 
+// Submit = När man klickar på submit eller login-knappen startas en validering av alla fält
 function submit() {
     event.preventDefault();
     let errors = 0; //Varje gång man trycker på submit eller login-knappen så börjar errors från noll
 
-    // Funktionen inputLoop tar varje inputs id (förutom gender och terms som är radio och checkbox-inputs) och testar det i inputValidate.
-    inputLoop();
+    inputLoop();      // Funktionen inputLoop tar varje inputs id (förutom gender och terms som är radio och checkbox-inputs) och testar det i inputValidate.
     function inputLoop() {
         for (var e = 0; e < inputs.length; e++) {
           if (inputs[e].name !== 'gender' && inputs[e].id !== 'terms') {
@@ -55,6 +60,10 @@ function submit() {
         // Meddelar om checkbox har blivit ikryssad
         termsAlerts(checkTerms);
         if (checkTerms() !== true) { errors++}
+
+        // Meddelar om message har blivit ifyllt
+        messageAlerts(checkMessage);
+        if (checkMessage() !== true) { errors++}
     }
 
     // Byter 'sida' om inga fel har hittats 
@@ -84,9 +93,15 @@ function submit() {
             return true;}
 
     function checkTerms() {       // Testar om terms har blivit ikryssad 
-        let termsCheck = document.getElementById('terms');
-        if (termsCheck.checked === true)
+        let terms = document.getElementById('terms');
+        if (terms.checked === true)
             return true;}
+
+    function checkMessage() {       // Testar om message har blivit ifyllt 
+        let message = document.getElementById('message');
+        if (message.value.length >= 3) 
+            return true;
+        }
 
 function inputValidate(id, value) {   //Testar alla input-fält
 
@@ -118,11 +133,6 @@ function inputValidate(id, value) {   //Testar alla input-fält
                 return true;
                 } else return 'The password must include at least one letter and one number';
             }
-
-        case 'message':
-            if (length(3)) {
-                return 'Please enter a message';
-            } else return true;
     }
 
     function validateEmail(email) {
@@ -134,8 +144,8 @@ function inputValidate(id, value) {   //Testar alla input-fält
         return re2.test(password);}
 
     function length(i) {
-        return value.length < i;
-}}
+        return value.length < i;}
+}
 
 // FUNKTIONER FÖR ATT TA BORT FELMEDDELANDEN
 
@@ -154,6 +164,12 @@ function deleteGenderAlerts() {
 function deleteCustomerAlerts() {
     removeAll('customerAlert');
     document.getElementById('customerGroup').classList.remove('is-invalid');
+}
+
+function deleteMessageAlerts() {
+    removeAll('messageAlert');
+    document.getElementById('message').classList.remove('is-invalid');
+    document.getElementById('message').classList.remove('is-valid');
 }
 
 function deleteTermsAlerts() {
@@ -204,6 +220,16 @@ function customerAlerts(x) {
         document.getElementById('customerGroup').classList.add('is-valid');   
 }
 
+function messageAlerts(x) {
+    if (x() !== true) {     // Om inget message har skrivits så händer det här
+        newDiv = createAlerts('messageAlert');
+        newDiv.innerHTML = 'Please enter a message';     
+        document.getElementById('message').parentNode.insertBefore(newDiv,document.getElementById('message').nextSibling);
+        document.getElementById('message').classList.add('is-invalid');    
+    }   else         // Om något meddelande har skrivits så händer det här
+        document.getElementById('message').classList.add('is-valid');   
+}
+
 function termsAlerts(x) {
     if (x() !== true) {     // Om checkboxen inte är ikryssad så händer det här
         newDiv = createAlerts('termsAlert');
@@ -223,6 +249,7 @@ function termsAlerts(x) {
     } 
 
 // SKAPAR INLOGGNINGSFORMULÄRET OCH MEDDELAR ATT REGISTRERINGEN ÄR KLAR 
+
 function addLogin() {
     const div = document.createElement('form');
     div.className = 'login';
@@ -250,6 +277,7 @@ function addLogin() {
 })}
 
 // MEDDELAR ATT MAN ÄR INLOGGAD
+
 function youAreLoggedIn() {
     const div = document.createElement('div');
     div.className = 'LoggedIn';
